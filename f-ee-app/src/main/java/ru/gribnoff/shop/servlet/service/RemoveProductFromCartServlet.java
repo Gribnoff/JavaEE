@@ -1,4 +1,4 @@
-package ru.gribnoff.shop.servlet;
+package ru.gribnoff.shop.servlet.service;
 
 import ru.gribnoff.shop.entities.Cart;
 
@@ -9,15 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "CartServlet", urlPatterns = "/shop/cart")
-public class CartServlet extends HttpServlet {
-	private String title = "Корзина";
+@WebServlet(name = "RemoveProductFromCartServlet", urlPatterns = "/shop/cart/remove")
+public class RemoveProductFromCartServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute("title", title);
-		request.setAttribute("cart", Cart.getCart());
+		Cart.getCart().removeByProductId(Long.parseLong(request.getParameter("id")));
 
-		getServletContext().getRequestDispatcher("/WEB-INF/views/cart.jsp").forward(request, response);
+		getServletContext().getRequestDispatcher("/shop/cart").forward(request, response);
 	}
 }

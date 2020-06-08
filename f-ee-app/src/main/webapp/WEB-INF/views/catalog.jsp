@@ -18,6 +18,7 @@
                 <th>Наименование</th>
                 <th>Описание</th>
                 <th>Цена</th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -34,6 +35,12 @@
                         </td>
                         <td>
                             <c:out value="${product.price}" /> руб.
+                        </td>
+                        <td>
+                            <c:url value="/shop/cart/add" var="addToCartUrl">
+                                <c:param name="id" value="${product.id}" />
+                            </c:url>
+                            <a href="${addToCartUrl}"><i class="fas fa-cart-plus fa-lg"></i></a>
                         </td>
                     </tr>
                 </c:forEach>
