@@ -56,7 +56,7 @@
         </table>
 
         <div class="d-flex justify-content-between">
-            <a class="btn btn-secondary" href="#">Оформить заказ</a>
+            <a class="btn btn-secondary" href="<c:url value="/shop/checkout"/>">Оформить заказ</a>
             <h5>Всего: <c:out value="${requestScope.cart.price}" /> руб</h5>
         </div>
     </div>
