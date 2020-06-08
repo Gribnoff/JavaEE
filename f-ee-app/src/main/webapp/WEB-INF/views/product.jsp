@@ -14,7 +14,11 @@
     <p>
         <c:out value="${requestScope.product.description}" />
     </p>
-    <div class="d-flex justify-content-end">
+    <div class="d-flex justify-content-between">
+        <c:url value="/shop/cart/add" var="addToCartUrl">
+            <c:param name="id" value="${requestScope.product.id}" />
+        </c:url>
+        <a class="btn btn-secondary" href="${addToCartUrl}">В корзину</a>
         <h5>Цена: <c:out value="${requestScope.product.price}" /> руб</h5>
     </div>
 </div>
