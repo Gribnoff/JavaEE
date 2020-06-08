@@ -48,7 +48,7 @@ public class ExceptionHandler extends HttpServlet {
 		}
 
 		out.write("<br><br>");
-		out.write(String.format("<a href=\"%s/shop/main\">Home Page</a>", request.getContextPath()));
+		out.write(String.format("<a href=\"%s/shop/home\">Home Page</a>", request.getContextPath()));
 		out.write("</body></html>");
 	}
 }
