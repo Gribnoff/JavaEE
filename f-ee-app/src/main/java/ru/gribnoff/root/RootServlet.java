@@ -14,7 +14,7 @@ public class RootServlet extends HttpServlet {
 		request.setAttribute("headerText", "Root");
 		getServletContext().getRequestDispatcher("/util/header").include(request, response);
 
-		response.getWriter().printf("<a href=\"/f-ee-app/shop/main\">%s</a><br>", "Shop");
+		response.getWriter().printf("<a href=\"/f-ee-app/shop/home\">%s</a><br>", "Shop");
 	}
 }
 
