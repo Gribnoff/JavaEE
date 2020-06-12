@@ -19,7 +19,7 @@ public class ProductController implements Serializable {
 	@Inject
 	private Cart cart;
 
-	private Product product;
+	private transient Product product;
 
 	public Product getProduct() {
 		return product;
@@ -29,11 +29,16 @@ public class ProductController implements Serializable {
 		this.product = product;
 	}
 
-	public void addProductToCart(Product product) throws SQLException {
+	public void addProductToCart(Product product) {
 		cart.add(product);
 	}
 
 	public List<Product> getAll() throws SQLException {
 		return productRepository.findAll();
+	}
+
+	public String showProduct(Product product) {
+		this.product = product;
+		return "/product.xhmtl?faces-redirect=true";
 	}
 }
