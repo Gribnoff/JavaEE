@@ -14,6 +14,8 @@ import java.util.List;
 @Named
 @SessionScoped
 public class ProductController implements Serializable {
+	private static final long serialVersionUID = 1041241922145207L;
+
 	@Inject
 	private ProductRepository productRepository;
 	@Inject
@@ -29,10 +31,6 @@ public class ProductController implements Serializable {
 		this.product = product;
 	}
 
-	public void addProductToCart(Product product) {
-		cart.add(product);
-	}
-
 	public List<Product> getAll() throws SQLException {
 		return productRepository.findAll();
 	}
@@ -40,5 +38,13 @@ public class ProductController implements Serializable {
 	public String showProduct(Product product) {
 		this.product = product;
 		return "/product.xhmtl?faces-redirect=true";
+	}
+
+	public void addProductToCart(Product product) {
+		cart.add(product);
+	}
+
+	public void removeProductFromCart(Product product) {
+		cart.remove(product.getId());
 	}
 }
