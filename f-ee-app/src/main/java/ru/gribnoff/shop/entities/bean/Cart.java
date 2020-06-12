@@ -13,8 +13,9 @@ import java.util.List;
 @Named
 @SessionScoped
 public class Cart implements Serializable {
-    private static Cart cart;
+    private static final long serialVersionUID = 1204905195025121207L;
 
+    private static Cart cart;
     private List<CartRecord> cartRecords;
     private Double price;
 
@@ -56,7 +57,7 @@ public class Cart implements Serializable {
         recalculatePrice();
     }
 
-    public void removeByProductId(long productId) {
+    public void remove(long productId) {
         for (int i = 0; i < cartRecords.size(); i++) {
             if (cartRecords.get(i).getProduct().getId() == productId) {
                 cartRecords.remove(i);

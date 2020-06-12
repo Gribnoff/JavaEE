@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <ui:include src="common/head.xhtml"/>
+    <title>Cart</title>
+</h:head>
+<h:body>
+    <div class="container">
+        <ui:include src="common/navbar.xhtml"/>
+        <div class="d-flex justify-content-center">
+            <h1>Корзина</h1>
+        </div>
+
+        <h:form id="cartTable">
+            <h:dataTable value="#{cart.cartRecords}" var="cartRecord"
+                         styleClass="table table-hover">
+                <h:column>
+                    <f:facet name="header">Товар</f:facet>
+                    <h:link value="#{cartRecord.product.title}"
+                            outcome="#{productController.showProduct(cartRecord.product)}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Цена</f:facet>
+                    #{cartRecord.product.price} руб.
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Количество</f:facet>
+                    #{cartRecord.quantity}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Сумма</f:facet>
+                    #{cartRecord.price} руб.
+                </h:column>
+                <h:column>
+                    <f:facet name="header"> </f:facet>
+                    <h:commandButton value="Добавить"
+                                     styleClass="btn btn-success"
+                                     action="#{productController.addProductToCart(cartRecord.product)}">
+                        <!--                    <i class="fas fa-cart-plus fa-lg"></i>-->
+                        <f:ajax event="click" render="productsTable"/>
+                    </h:commandButton>
+                    <f:facet name="header"> </f:facet>
+                    <h:commandButton value="Удалить"
+                                     styleClass="btn btn-danger"
+                                     action="#{productController.removeProductFromCart(cartRecord.product)}">
+                        <f:ajax event="click" render="productsTable"/>
+                    </h:commandButton>
+                </h:column>
+            </h:dataTable>
+        </h:form>
+
+        <div class="d-flex justify-content-between">
+            <h:link value="Оформить заказ" outcome="" styleClass="btn btn-secondary"/>
+            <h5>Всего: #{cart.price} руб</h5>
+        </div>
+    </div>
+</h:body>
+</html>
