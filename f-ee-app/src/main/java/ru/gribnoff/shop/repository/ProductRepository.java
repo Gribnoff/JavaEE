@@ -1,14 +1,12 @@
 package ru.gribnoff.shop.repository;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import ru.gribnoff.shop.config.DataSource;
 import ru.gribnoff.shop.entities.Product;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.ServletContext;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,32 +14,21 @@ import java.util.List;
 @Named
 @ApplicationScoped
 public class ProductRepository {
-
-	private static final Logger logger = LoggerFactory.getLogger(ProductRepository.class);
-
 	@Inject
-	private ServletContext servletContext;
-	private Connection conn;
+	private DataSource dataSource;
+
+	private Connection connection;
 
 	@PostConstruct
 	public void init() throws SQLException {
-		String jdbcConnectionString = servletContext.getInitParameter("jdbcConnectionString");
-		String username = servletContext.getInitParameter("username");
-		String password = servletContext.getInitParameter("password");
-
-		try {
-			conn = DriverManager.getConnection(jdbcConnectionString, username, password);
-			createTableIfNotExists(conn);
-		} catch (SQLException throwables) {
-			logger.error("", throwables);
-			throw new RuntimeException(throwables);
-		}
-
+		this.connection = dataSource.getConnection();
+		createTableIfNotExists(connection);
 	}
 
 	public void insert(Product product) throws SQLException {
-		try (PreparedStatement stmt = conn.prepareStatement(
-				"insert into `java_ee_shop`.`products`(`title`, `description`, `price`) values (?, ?, ?);")) {
+		try (PreparedStatement stmt = connection.prepareStatement(
+				"insert into `java_ee_shop`.`products`(`title`, `description`, `price`) " +
+						"values (?, ?, ?);")) {
 			stmt.setString(1, product.getTitle());
 			stmt.setString(2, product.getDescription());
 			stmt.setDouble(3, product.getPrice());
@@ -50,8 +37,10 @@ public class ProductRepository {
 	}
 
 	public void update(Product product) throws SQLException {
-		try (PreparedStatement stmt = conn.prepareStatement(
-				"update `java_ee_shop`.`products` set `title` = ?, `description` = ?, `price` = ? where `id` = ?;")) {
+		try (PreparedStatement stmt = connection.prepareStatement(
+				"update `java_ee_shop`.`products` " +
+						"set `title` = ?, `description` = ?, `price` = ? " +
+						"where `id` = ?;")) {
 			stmt.setString(1, product.getTitle());
 			stmt.setString(2, product.getDescription());
 			stmt.setDouble(3, product.getPrice());
@@ -61,19 +50,22 @@ public class ProductRepository {
 	}
 
 	public void delete(long id) throws SQLException {
-		try (PreparedStatement stmt = conn.prepareStatement(
-				"delete from `java_ee_shop`.`products` where `id` = ?;")) {
+		try (PreparedStatement stmt = connection.prepareStatement(
+				"delete from `java_ee_shop`.`products` " +
+						"where `id` = ?;")) {
 			stmt.setLong(1, id);
 			stmt.execute();
 		}
 	}
 
 	public Product findById(long id) throws SQLException {
-		try (PreparedStatement stmt = conn.prepareStatement(
-				"select `id`, `title`, `description`, `price` from `java_ee_shop`.`products` where `id` = ?")) {
+		try (PreparedStatement stmt = connection.prepareStatement(
+				"select `id`, `title`, `description`, `price` " +
+						"from `java_ee_shop`.`products` " +
+						"where `id` = ?")) {
 			stmt.setLong(1, id);
-			try (ResultSet rs = stmt.executeQuery()) {
 
+			try (ResultSet rs = stmt.executeQuery()) {
 				if (rs.next()) {
 					return new Product(rs.getString("title"),
 							rs.getString("description"), rs.getDouble("price"));
@@ -85,9 +77,10 @@ public class ProductRepository {
 
 	public List<Product> findAll() throws SQLException {
 		List<Product> result = new ArrayList<>();
-		try (Statement stmt = conn.createStatement()) {
-			try (ResultSet rs = stmt.executeQuery("select `title`, `description`, `price` from products")) {
-
+		try (Statement stmt = connection.createStatement()) {
+			try (ResultSet rs = stmt.executeQuery(
+					"select `title`, `description`, `price` " +
+							"from `products`")) {
 				while (rs.next()) {
 					result.add(new Product(rs.getString("title"),
 							rs.getString("description"), rs.getDouble("price")));
