@@ -1,9 +1,12 @@
 package ru.gribnoff.shop.entities;
 
+import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class Product {
-	private final Long id;
+public class Product implements Serializable {
+	private static final long serialVersionUID = 10419221207L;
+
+	private final long id;
 	private static final AtomicLong totalCount = new AtomicLong(0);
 
 	private String title;
@@ -21,7 +24,7 @@ public class Product {
 		this.price = price;
 	}
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 

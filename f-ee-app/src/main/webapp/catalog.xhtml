@@ -20,7 +20,7 @@
                          styleClass="table table-hover">
                 <h:column>
                     <f:facet name="header">Наименование</f:facet>
-                    #{product.title}
+                    <h:link value="#{product.title}" outcome="#{productController.showProduct(product)}"/>
                 </h:column>
                 <h:column>
                     <f:facet name="header">Описание</f:facet>
