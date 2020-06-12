@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <ui:include src="common/head.xhtml"/>
+    <title>Product</title>
+</h:head>
+<h:body>
+<div class="container">
+    <ui:include src="common/navbar.xhtml"/>
+    <div class="d-flex justify-content-center">
+        <h1>Товар</h1>
+    </div>
+    <p>
+        <!--        <c:out value="${requestScope.product.description}" />-->
+        #{productController.product.description}
+    </p>
+    <div class="d-flex justify-content-between">
+        <h:form id="addToCart">
+            <h:commandButton value="" styleClass="btn btn-secondary"
+                             action="#{productController.addProductToCart(product)}"><i
+                    class="fas fa-cart-plus fa-lg"></i></h:commandButton>
+        </h:form>
+        <h5>Цена: #{productController.product.price} руб</h5>
+    </div>
+</div>
+</h:body>
+</html>

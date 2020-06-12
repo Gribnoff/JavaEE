@@ -12,6 +12,12 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
+    <welcome-file-list>
+        <welcome-file>home.jsp</welcome-file>
+        <welcome-file>home.html</welcome-file>
+        <welcome-file>home.xhtml</welcome-file>
+    </welcome-file-list>
+
     <servlet-mapping>
         <servlet-name>faces-servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>

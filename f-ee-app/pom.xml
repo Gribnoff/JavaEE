@@ -65,6 +65,12 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>font-awesome</artifactId>
+      <version>5.3.1</version>
+    </dependency>
   </dependencies>
 
   <build>
