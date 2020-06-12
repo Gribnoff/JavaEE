@@ -9,23 +9,23 @@
     <title>Product</title>
 </h:head>
 <h:body>
-<div class="container">
-    <ui:include src="common/navbar.xhtml"/>
-    <div class="d-flex justify-content-center">
-        <h1>Товар</h1>
+    <div class="container">
+        <ui:include src="common/navbar.xhtml"/>
+        <div class="d-flex justify-content-center">
+            <h1>Товар</h1>
+        </div>
+        <p>
+            #{productController.product.description}
+        </p>
+        <div class="d-flex justify-content-between">
+            <h:form id="addToCart">
+                <h:commandButton value="В корзину" styleClass="btn btn-success"
+                                 action="#{productController.addProductToCart(productController.product)}">
+                    <!--                <i class="fas fa-cart-plus fa-lg"></i>-->
+                </h:commandButton>
+            </h:form>
+            <h5>Цена: #{productController.product.price} руб</h5>
+        </div>
     </div>
-    <p>
-        #{productController.product.description}
-    </p>
-    <div class="d-flex justify-content-between">
-        <h:form id="addToCart">
-            <h:commandButton value="" styleClass="btn btn-success"
-                             action="#{productController.addProductToCart(productController.product)}">
-<!--                <i class="fas fa-cart-plus fa-lg"></i>-->
-            </h:commandButton>
-        </h:form>
-        <h5>Цена: #{productController.product.price} руб</h5>
-    </div>
-</div>
 </h:body>
 </html>
