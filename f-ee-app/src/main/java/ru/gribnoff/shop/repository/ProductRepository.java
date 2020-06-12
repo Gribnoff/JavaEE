@@ -1,17 +1,42 @@
 package ru.gribnoff.shop.repository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.gribnoff.shop.entities.Product;
 
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.servlet.ServletContext;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Named
+@ApplicationScoped
 public class ProductRepository {
-	private final Connection conn;
 
-	public ProductRepository(Connection conn) throws SQLException {
-		this.conn = conn;
-		createTableIfNotExists(conn);
+	private static final Logger logger = LoggerFactory.getLogger(ProductRepository.class);
+
+	@Inject
+	private ServletContext servletContext;
+	private Connection conn;
+
+	@PostConstruct
+	public void init() throws SQLException {
+		String jdbcConnectionString = servletContext.getInitParameter("jdbcConnectionString");
+		String username = servletContext.getInitParameter("username");
+		String password = servletContext.getInitParameter("password");
+
+		try {
+			conn = DriverManager.getConnection(jdbcConnectionString, username, password);
+			createTableIfNotExists(conn);
+		} catch (SQLException throwables) {
+			logger.error("", throwables);
+			throw new RuntimeException(throwables);
+		}
+
 	}
 
 	public void insert(Product product) throws SQLException {

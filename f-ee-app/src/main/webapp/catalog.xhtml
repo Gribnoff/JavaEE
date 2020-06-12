@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <ui:include src="common/head.xhtml"/>
+    <title>Catalog</title>
+</h:head>
+<h:body>
+    <div class="container">
+        <ui:include src="common/navbar.xhtml"/>
+        <div class="d-flex justify-content-center">
+            <h1>Каталог</h1>
+        </div>
+
+        <h:form id="productsTable">
+            <h:dataTable value="#{productController.getAll()}" var="product"
+                         styleClass="table table-hover">
+                <h:column>
+                    <f:facet name="header">Наименование</f:facet>
+                    #{product.title}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Описание</f:facet>
+                    #{product.description}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Цена</f:facet>
+                    #{product.price}
+                </h:column>
+                <h:column>
+                    <f:facet name="header"> </f:facet>
+                    <h:commandButton value="В корзину"
+                                     styleClass="btn btn-success"
+                                     action="#{productController.addProductToCart(product)}">
+<!--                    <i class="fas fa-cart-plus fa-lg"></i>-->
+                        <f:ajax event="click" render="productsTable"/>
+                    </h:commandButton>
+                </h:column>
+            </h:dataTable>
+        </h:form>
+    </div>
+</h:body>
+</html>

@@ -1,15 +1,25 @@
-package ru.gribnoff.shop.entities;
+package ru.gribnoff.shop.entities.bean;
 
+import ru.gribnoff.shop.entities.CartRecord;
+import ru.gribnoff.shop.entities.Product;
+
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Cart{
+@Named
+@SessionScoped
+public class Cart implements Serializable {
     private static Cart cart;
 
-    private final List<CartRecord> cartRecords;
+    private List<CartRecord> cartRecords;
     private Double price;
 
-    private Cart() {
+    @PostConstruct
+    public void init() {
         cartRecords = new ArrayList<>();
         recalculatePrice();
     }
