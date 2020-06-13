@@ -1,24 +1,24 @@
 package ru.gribnoff.shop.entities;
 
-import javax.servlet.http.HttpServletRequest;
+import org.jetbrains.annotations.NotNull;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
-public class Order{
+public class Order implements Serializable {
+	private static final long serialVersionUID = 104119221352077L;
+
 	private final long id;
-	private static final AtomicLong totalCount = new AtomicLong(0);
 
-	private final Double price;
+	private final double price;
 	private final List<CartRecord> cartRecords;
-
-	private static List<Order> orders;
 
 	public long getId() {
 		return id;
 	}
 
-	public Double getPrice() {
+	public double getPrice() {
 		return price;
 	}
 
@@ -26,21 +26,17 @@ public class Order{
 		return cartRecords;
 	}
 
-	public static List<Order> getOrders() {
-		return orders;
-	}
-
-	public Order(List<CartRecord> cartRecords, Double price) {
-		this.id = totalCount.incrementAndGet();
+	public Order(long id, @NotNull List<CartRecord> cartRecords, Double price) {
+		this.id = id;
 		this.cartRecords = new ArrayList<>(cartRecords);
 		this.price = price;
-
-		if (orders == null)
-			orders = new ArrayList<>();
-		orders.add(this);
 	}
 
-	public static Order getOrderByIdFromRequest(HttpServletRequest request) {
-		return Order.getOrders().get((int)Long.parseLong(request.getParameter("id")) - 1);
+	public static double calculatePrice(@NotNull List<CartRecord> cartRecords) {
+		double overall = 0;
+		for (CartRecord cartRecord : cartRecords) {
+			overall += cartRecord.getPrice();
+		}
+		return overall;
 	}
 }

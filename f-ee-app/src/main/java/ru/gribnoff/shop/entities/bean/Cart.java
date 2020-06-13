@@ -17,7 +17,7 @@ public class Cart implements Serializable {
 
     private static Cart cart;
     private List<CartRecord> cartRecords;
-    private Double price;
+    private double price;
 
     @PostConstruct
     public void init() {
@@ -35,7 +35,11 @@ public class Cart implements Serializable {
         return cartRecords;
     }
 
-    public Double getPrice() {
+    public boolean isEmpty() {
+        return cartRecords.isEmpty();
+    }
+
+    public double getPrice() {
         return price;
     }
 

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <ui:include src="common/head.xhtml"/>
+    <title>Order</title>
+</h:head>
+<h:body>
+    <div class="container">
+        <ui:include src="common/navbar.xhtml"/>
+        <div class="d-flex justify-content-center">
+            <h1>Заказ</h1>
+        </div>
+
+        <h:form id="orderTable">
+            <h:dataTable value="#{orderController.order.cartRecords}" var="cartRecord"
+                         styleClass="table table-hover">
+                <h:column>
+                    <f:facet name="header">Товар</f:facet>
+                    <h:link value="#{cartRecord.product.title}" outcome="#{productController.showProduct(cartRecord.product)}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Цена</f:facet>
+                    #{cartRecord.price}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Количество</f:facet>
+                    #{cartRecord.quantity}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Сумма</f:facet>
+                    #{cartRecord.price}
+                </h:column>
+            </h:dataTable>
+        </h:form>
+
+        <div class="d-flex justify-content-between">
+            <h:link value="К заказам" outcome="orders" styleClass="btn btn-secondary"/>
+            <h5>Всего: #{orderController.order.price} руб</h5>
+        </div>
+    </div>
+</h:body>
+</html>

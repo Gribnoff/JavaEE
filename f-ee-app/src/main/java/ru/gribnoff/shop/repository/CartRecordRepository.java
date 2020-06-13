@@ -75,7 +75,7 @@ public class CartRecordRepository {
 				}
 			}
 		}
-		return new CartRecord(new Product(), 0);
+		return new CartRecord(new Product(-1L, "", "", 0.), 0);
 	}
 
 	public List<CartRecord> findAllByOrderId(long id) throws SQLException {
