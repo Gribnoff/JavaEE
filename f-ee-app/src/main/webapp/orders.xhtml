@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <ui:include src="common/head.xhtml"/>
+    <title>Orders</title>
+</h:head>
+<h:body>
+    <div class="container">
+        <ui:include src="common/navbar.xhtml"/>
+        <div class="d-flex justify-content-center">
+            <h1>Заказы</h1>
+        </div>
+
+        <h:form id="ordersTable">
+            <h:dataTable value="#{orderController.getAll()}" var="order"
+                         styleClass="table table-hover">
+                <h:column>
+                    <f:facet name="header">Номер заказа</f:facet>
+                    <h:link value="#{order.id}" outcome="#{orderController.showOrder(order)}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Цена</f:facet>
+                    #{order.price}
+                </h:column>
+            </h:dataTable>
+        </h:form>
+
+        <div class="d-flex justify-content-end">
+            <h:link value="В магазин" outcome="catalog" styleClass="btn btn-secondary"/>
+        </div>
+    </div>
+</h:body>
+</html>

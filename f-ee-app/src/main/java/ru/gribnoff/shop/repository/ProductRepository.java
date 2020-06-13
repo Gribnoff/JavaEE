@@ -67,22 +67,22 @@ public class ProductRepository {
 
 			try (ResultSet rs = stmt.executeQuery()) {
 				if (rs.next()) {
-					return new Product(rs.getString("title"),
+					return new Product(rs.getLong("id"), rs.getString("title"),
 							rs.getString("description"), rs.getDouble("price"));
 				}
 			}
 		}
-		return new Product("", "", 0.);
+		return new Product(-1L, "", "", 0.);
 	}
 
 	public List<Product> findAll() throws SQLException {
 		List<Product> result = new ArrayList<>();
 		try (Statement stmt = connection.createStatement()) {
 			try (ResultSet rs = stmt.executeQuery(
-					"select `title`, `description`, `price` " +
+					"select `id`, `title`, `description`, `price` " +
 							"from `products`")) {
 				while (rs.next()) {
-					result.add(new Product(rs.getString("title"),
+					result.add(new Product(rs.getLong("id"), rs.getString("title"),
 							rs.getString("description"), rs.getDouble("price")));
 				}
 			}

@@ -6,17 +6,17 @@ import java.util.concurrent.atomic.AtomicLong;
 public class CartRecord implements Serializable {
     private static final long serialVersionUID = 1905122041950251207L;
 
-    private final Long id;
+    private final long id;
     private static final AtomicLong totalCount = new AtomicLong(0);
     private final Product product;
-    private Integer quantity;
-    private Double price;
+    private int quantity;
+    private double price;
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public Integer getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
@@ -24,7 +24,7 @@ public class CartRecord implements Serializable {
         this.quantity = quantity;
     }
 
-    public Double getPrice() {
+    public double getPrice() {
         return price;
     }
 
@@ -48,5 +48,12 @@ public class CartRecord implements Serializable {
         this.product = product;
         this.quantity = quantity;
         this.price = product.getPrice() * quantity;
+    }
+
+    public CartRecord(long id, Product product, int quantity) {
+        this.id = id;
+        this.product = product;
+        this.quantity = quantity;
+        this.price = product.getPrice();
     }
 }
