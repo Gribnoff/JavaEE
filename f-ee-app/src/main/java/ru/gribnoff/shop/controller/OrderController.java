@@ -40,17 +40,19 @@ public class OrderController implements Serializable {
 		return orderRepository.findAll().orElse(new ArrayList<>());
 	}
 
-	public String showOrder(Order order) {
-		this.order = order;
+	public String showOrder(long id) throws SQLException {
+		this.order = orderRepository.findById(id).get();
 		return "/order.xhmtl?faces-redirect=true";
 	}
 
 	public String proceedToCheckout() throws SQLException {
+		this.order = new Order(-1L, cart.getCartRecords(), cart.getPrice());
+		this.order.setId(orderRepository.insert(order));
+
 		for (CartRecord cartRecord : cart.getCartRecords()) {
+			cartRecord.setOrder(this.order);
 			cartRecordRepository.insert(cartRecord);
 		}
-		this.order = new Order(-1L, cart.getCartRecords(), cart.getPrice());
-		orderRepository.insert(order);
 		cart.clear();
 		return "/checkout.xhtml?faces-redirect=true";
 	}

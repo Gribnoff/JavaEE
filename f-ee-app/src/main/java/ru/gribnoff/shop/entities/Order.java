@@ -9,13 +9,17 @@ import java.util.List;
 public class Order implements Serializable {
 	private static final long serialVersionUID = 104119221352077L;
 
-	private final long id;
+	private long id;
 
 	private final double price;
 	private final List<CartRecord> cartRecords;
 
 	public long getId() {
 		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public double getPrice() {

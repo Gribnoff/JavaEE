@@ -20,7 +20,7 @@
                          styleClass="table table-hover">
                 <h:column>
                     <f:facet name="header">Номер заказа</f:facet>
-                    <h:commandLink value="#{order.id}" action="#{orderController.showOrder(order)}"/>
+                    <h:commandLink value="#{order.id}" action="#{orderController.showOrder(order.id)}"/>
                 </h:column>
                 <h:column>
                     <f:facet name="header">Цена</f:facet>
