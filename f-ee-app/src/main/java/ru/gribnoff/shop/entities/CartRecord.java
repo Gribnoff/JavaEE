@@ -36,20 +36,6 @@ public class CartRecord implements Serializable {
         return product;
     }
 
-    public CartRecord(Product product) {
-        this.id = totalCount.incrementAndGet();
-        this.product = product;
-        this.quantity = 1;
-        this.price = product.getPrice();
-    }
-
-    public CartRecord(Product product, int quantity) {
-        this.id = totalCount.incrementAndGet();
-        this.product = product;
-        this.quantity = quantity;
-        this.price = product.getPrice() * quantity;
-    }
-
     public CartRecord(long id, Product product, int quantity) {
         this.id = id;
         this.product = product;

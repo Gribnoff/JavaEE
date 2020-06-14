@@ -57,7 +57,7 @@ public class Cart implements Serializable {
                 return;
             }
         }
-        cartRecords.add(new CartRecord(product));
+        cartRecords.add(new CartRecord(-1L, product, 1));
         recalculatePrice();
     }
 
