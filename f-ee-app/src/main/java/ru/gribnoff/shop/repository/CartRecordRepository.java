@@ -70,6 +70,7 @@ public class CartRecordRepository {
 			try (ResultSet rs = stmt.executeQuery()) {
 				if (rs.next()) {
 					return Optional.of(new CartRecord(
+							rs.getLong("id"),
 							productRepository.findById(rs.getLong("product_id")).get(),
 							rs.getInt("quantity")));
 				}
@@ -90,6 +91,7 @@ public class CartRecordRepository {
 
 				while (rs.next()) {
 					result.add(new CartRecord(
+							rs.getLong("id"),
 							productRepository.findById(rs.getLong("product_id")).get(),
 							rs.getInt("quantity")));
 				}

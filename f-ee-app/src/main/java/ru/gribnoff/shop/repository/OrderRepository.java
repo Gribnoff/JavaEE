@@ -48,8 +48,8 @@ public class OrderRepository {
 			try (ResultSet maxIdRS = selectMaxId.executeQuery(
 					"select MAX(`id`) max " +
 							"from `orders`")) {
-				if (maxIdRS.next())
-					maxId = maxIdRS.getLong("max");
+				maxIdRS.next();
+				maxId = maxIdRS.getLong("max");
 			}
 
 			for (CartRecord cartRecord : order.getCartRecords()) {
@@ -124,6 +124,7 @@ public class OrderRepository {
 					try (ResultSet cartRecordsRS = findCartRecords.executeQuery()) {
 						while (cartRecordsRS.next()) {
 							cartRecords.add(new CartRecord(
+									cartRecordsRS.getLong("cart_record_id"),
 									productRepository.findById(cartRecordsRS.getLong("product_id")).get(),
 									cartRecordsRS.getInt("quantity")));
 						}
