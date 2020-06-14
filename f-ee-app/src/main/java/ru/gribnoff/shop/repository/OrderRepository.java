@@ -31,32 +31,23 @@ public class OrderRepository {
 		createTableIfNotExists(connection);
 	}
 
-	public void insert(Order order) throws SQLException {
+	public long insert(Order order) throws SQLException {
 		try (
 				PreparedStatement insertOrder = connection.prepareStatement(
 						"insert into `java_ee_shop`.`orders`(`price`) " +
 								"values (?);");
-				Statement selectMaxId = connection.createStatement();
-				PreparedStatement insertCartRecords = connection.prepareStatement(
-						"insert into `java_ee_shop`.`order_cart_record`(`order_id`, `cart_record_id`) " +
-								"values (? ,?);"
-				)) {
+				Statement selectMaxId = connection.createStatement()) {
 			insertOrder.setDouble(1, order.getPrice());
 			insertOrder.execute();
-			long maxId = -1L;
+			long orderId = -1L;
 
 			try (ResultSet maxIdRS = selectMaxId.executeQuery(
 					"select MAX(`id`) max " +
 							"from `orders`")) {
 				maxIdRS.next();
-				maxId = maxIdRS.getLong("max");
+				orderId = maxIdRS.getLong("max");
 			}
-
-			for (CartRecord cartRecord : order.getCartRecords()) {
-				insertCartRecords.setLong(1, maxId);
-				insertCartRecords.setLong(2, cartRecord.getId());
-				insertCartRecords.execute();
-			}
+			return orderId;
 		}
 	}
 
@@ -65,32 +56,17 @@ public class OrderRepository {
 				PreparedStatement updateOrder = connection.prepareStatement(
 						"update `java_ee_shop`.`orders` " +
 								"set `price` = ? " +
-								"where `id` = ?;");
-				PreparedStatement deleteCartRecords = connection.prepareStatement(
-						"delete from `java_ee_shop`.`order_cart_record` " +
-								"where `order_id` = ?");
-				PreparedStatement insertCartRecords = connection.prepareStatement(
-						"insert into `java_ee_shop`.`order_cart_record`(`order_id`, `cart_record_id`) " +
-								"values (? ,?);")) {
+								"where `id` = ?;")) {
 
 			updateOrder.setDouble(1, order.getPrice());
 			updateOrder.execute();
-
-			deleteCartRecords.setLong(1, order.getId());
-			deleteCartRecords.execute();
-
-			for (CartRecord cartRecord : order.getCartRecords()) {
-				insertCartRecords.setLong(1, order.getId());
-				insertCartRecords.setLong(2, cartRecord.getId());
-				insertCartRecords.execute();
-			}
 		}
 	}
 
 	public void delete(long id) throws SQLException {
 		try (
 				PreparedStatement deleteCardRecords = connection.prepareStatement(
-						"delete from `java_ee_shop`.`order_cart_record` " +
+						"delete from `java_ee_shop`.`cart_records` " +
 								"where `order_id` = ?;");
 				PreparedStatement deleteOrder = connection.prepareStatement(
 						"delete from `java_ee_shop`.`orders` " +
@@ -108,28 +84,15 @@ public class OrderRepository {
 				PreparedStatement findOrder = connection.prepareStatement(
 						"select `id`, `price` " +
 								"from `java_ee_shop`.`orders` " +
-								"where `id` = ?");
-				PreparedStatement findCartRecords = connection.prepareStatement(
-						"select `ocr`.`order_id`, `ocr`.`cart_record_id`, `cr`.`product_id`, `cr`.`quantity` " +
-								"from `order_cart_record` `ocr` " +
-								"join `cart_records` `cr` on `ocr`.`cart_record_id` = `cr`.`id` " +
-								"where `ocr`.`order_id` = ?;")) {
+								"where `id` = ?")) {
 			findOrder.setLong(1, id);
 
 			try (ResultSet orderRS = findOrder.executeQuery()) {
 				if (orderRS.next()) {
-					findCartRecords.setLong(1, id);
-					List<CartRecord> cartRecords = new ArrayList<>();
-
-					try (ResultSet cartRecordsRS = findCartRecords.executeQuery()) {
-						while (cartRecordsRS.next()) {
-							cartRecords.add(new CartRecord(
-									cartRecordsRS.getLong("cart_record_id"),
-									productRepository.findById(cartRecordsRS.getLong("product_id")).get(),
-									cartRecordsRS.getInt("quantity")));
-						}
-						return Optional.of(new Order(cartRecordsRS.getLong("id"), cartRecords, Order.calculatePrice(cartRecords)));
-					}
+					List<CartRecord> cartRecords = cartRecordRepository
+							.findAllByOrderId(orderRS.getLong("id"))
+							.orElse(new ArrayList<>());
+					return Optional.of(new Order(orderRS.getLong("id"), cartRecords, orderRS.getDouble("price")));
 				}
 			}
 		}
@@ -138,31 +101,13 @@ public class OrderRepository {
 
 	public Optional<List<Order>> findAll() throws SQLException {
 		List<Order> result = new ArrayList<>();
-		try (
-				Statement findOrders = connection.createStatement();
-				PreparedStatement findCartRecords = connection.prepareStatement(
-						"select `ocr`.`order_id`, `ocr`.`cart_record_id`, `cr`.`product_id`, `cr`.`quantity` " +
-								"from `order_cart_record` `ocr` " +
-								"join `cart_records` `cr` on `ocr`.`cart_record_id` = `cr`.`id` " +
-								"where `ocr`.`order_id` = ?;")) {
+		try (Statement findOrders = connection.createStatement();
+			 ResultSet ordersRS = findOrders.executeQuery(
+					 "select `id`, `price` " +
+							 "from `java_ee_shop`.`orders`")) {
 
-			try (ResultSet ordersRS = findOrders.executeQuery(
-					"select `id`, `price` " +
-							"from `java_ee_shop`.`orders` ")) {
-				while (ordersRS.next()) {
-					List<CartRecord> cartRecords = new ArrayList<>();
-
-					findCartRecords.setLong(1, ordersRS.getLong("id"));
-					try (ResultSet cartRecordsRS = findCartRecords.executeQuery()) {
-						while (cartRecordsRS.next()) {
-							cartRecords.add(new CartRecord(
-									cartRecordsRS.getLong("cart_record_id"),
-									productRepository.findById(cartRecordsRS.getLong("product_id")).get(),
-									cartRecordsRS.getInt("quantity")));
-						}
-						result.add(new Order(ordersRS.getLong("id"), cartRecords, ordersRS.getDouble("price")));
-					}
-				}
+			while (ordersRS.next()) {
+				result.add(new Order(ordersRS.getLong("id"), new ArrayList<>(), ordersRS.getDouble("price")));
 			}
 		}
 		return Optional.of(result);

@@ -1,16 +1,17 @@
 package ru.gribnoff.shop.entities;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
-import java.util.concurrent.atomic.AtomicLong;
 
 public class CartRecord implements Serializable {
     private static final long serialVersionUID = 1905122041950251207L;
 
     private final long id;
-    private static final AtomicLong totalCount = new AtomicLong(0);
     private final Product product;
     private int quantity;
     private double price;
+    private Order order;
 
     public long getId() {
         return id;
@@ -36,10 +37,19 @@ public class CartRecord implements Serializable {
         return product;
     }
 
-    public CartRecord(long id, Product product, int quantity) {
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public CartRecord(long id, @NotNull Product product, int quantity, Order order) {
         this.id = id;
         this.product = product;
         this.quantity = quantity;
-        this.price = product.getPrice();
+        this.price = product.getPrice() * quantity;
+        this.order = order;
     }
 }
