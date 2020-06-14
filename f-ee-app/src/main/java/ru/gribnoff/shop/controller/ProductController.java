@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Named
@@ -32,7 +33,7 @@ public class ProductController implements Serializable {
 	}
 
 	public List<Product> getAll() throws SQLException {
-		return productRepository.findAll();
+		return productRepository.findAll().orElse(new ArrayList<>());
 	}
 
 	public String showProduct(Product product) {

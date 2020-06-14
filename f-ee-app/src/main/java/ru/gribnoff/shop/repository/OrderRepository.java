@@ -115,22 +115,24 @@ public class OrderRepository {
 								"join `cart_records` `cr` on `ocr`.`cart_record_id` = `cr`.`id` " +
 								"where `ocr`.`order_id` = ?;")) {
 			findOrder.setLong(1, id);
-			try (ResultSet orderRS = findOrder.executeQuery()) {
-				if (!orderRS.next())
-					return Optional.empty();
-			}
 
-			findCartRecords.setLong(1, id);
-			List<CartRecord> cartRecords = new ArrayList<>();
-			try (ResultSet cartRecordsRS = findCartRecords.executeQuery()) {
-				while (cartRecordsRS.next()) {
-					cartRecords.add(new CartRecord(
-							productRepository.findById(cartRecordsRS.getLong("product_id")),
-							cartRecordsRS.getInt("quantity")));
+			try (ResultSet orderRS = findOrder.executeQuery()) {
+				if (orderRS.next()) {
+					findCartRecords.setLong(1, id);
+					List<CartRecord> cartRecords = new ArrayList<>();
+
+					try (ResultSet cartRecordsRS = findCartRecords.executeQuery()) {
+						while (cartRecordsRS.next()) {
+							cartRecords.add(new CartRecord(
+									productRepository.findById(cartRecordsRS.getLong("product_id")).get(),
+									cartRecordsRS.getInt("quantity")));
+						}
+						return Optional.of(new Order(cartRecordsRS.getLong("id"), cartRecords, Order.calculatePrice(cartRecords)));
+					}
 				}
-				return Optional.of(new Order(cartRecordsRS.getLong("id"), cartRecords, Order.calculatePrice(cartRecords)));
 			}
 		}
+		return Optional.empty();
 	}
 
 	public Optional<List<Order>> findAll() throws SQLException {
@@ -154,7 +156,7 @@ public class OrderRepository {
 						while (cartRecordsRS.next()) {
 							cartRecords.add(new CartRecord(
 									cartRecordsRS.getLong("cart_record_id"),
-									productRepository.findById(cartRecordsRS.getLong("product_id")),
+									productRepository.findById(cartRecordsRS.getLong("product_id")).get(),
 									cartRecordsRS.getInt("quantity")));
 						}
 						result.add(new Order(ordersRS.getLong("id"), cartRecords, ordersRS.getDouble("price")));

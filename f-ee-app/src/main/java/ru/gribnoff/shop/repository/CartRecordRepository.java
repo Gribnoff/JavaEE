@@ -2,7 +2,6 @@ package ru.gribnoff.shop.repository;
 
 import ru.gribnoff.shop.config.DataSource;
 import ru.gribnoff.shop.entities.CartRecord;
-import ru.gribnoff.shop.entities.Product;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -11,6 +10,7 @@ import javax.inject.Named;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Named
 @ApplicationScoped
@@ -61,7 +61,7 @@ public class CartRecordRepository {
 		}
 	}
 
-	public CartRecord findById(long id) throws SQLException {
+	public Optional<CartRecord> findById(long id) throws SQLException {
 		try (PreparedStatement stmt = connection.prepareStatement(
 				"select `id`, `product_id`, `quantity`, `price` " +
 						"from `java_ee_shop`.`cart_records` " +
@@ -69,16 +69,16 @@ public class CartRecordRepository {
 			stmt.setLong(1, id);
 			try (ResultSet rs = stmt.executeQuery()) {
 				if (rs.next()) {
-					return new CartRecord(
-							productRepository.findById(rs.getLong("product_id")),
-							rs.getInt("quantity"));
+					return Optional.of(new CartRecord(
+							productRepository.findById(rs.getLong("product_id")).get(),
+							rs.getInt("quantity")));
 				}
 			}
 		}
-		return new CartRecord(new Product(-1L, "", "", 0.), 0);
+		return Optional.empty();
 	}
 
-	public List<CartRecord> findAllByOrderId(long id) throws SQLException {
+	public Optional<List<CartRecord>> findAllByOrderId(long id) throws SQLException {
 		List<CartRecord> result = new ArrayList<>();
 		try (PreparedStatement stmt = connection.prepareStatement(
 				"select `cr`.`product_id`, `cr`.`quantity`, `cr`.`price` " +
@@ -90,12 +90,12 @@ public class CartRecordRepository {
 
 				while (rs.next()) {
 					result.add(new CartRecord(
-							productRepository.findById(rs.getLong("product_id")),
+							productRepository.findById(rs.getLong("product_id")).get(),
 							rs.getInt("quantity")));
 				}
 			}
 		}
-		return result;
+		return Optional.of(result);
 	}
 
 	private void createTableIfNotExists(Connection conn) throws SQLException {
