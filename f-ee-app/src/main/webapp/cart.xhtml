@@ -21,8 +21,8 @@
                          styleClass="table table-hover">
                 <h:column>
                     <f:facet name="header">Товар</f:facet>
-                    <h:link value="#{cartRecord.product.title}"
-                            outcome="#{productController.showProduct(cartRecord.product)}"/>
+                    <h:commandLink value="#{cartRecord.product.title}"
+                            action="#{productController.showProduct(cartRecord.product)}"/>
                 </h:column>
                 <h:column>
                     <f:facet name="header">Цена</f:facet>
