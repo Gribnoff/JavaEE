@@ -10,6 +10,7 @@ import javax.inject.Named;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Named
 @ApplicationScoped
@@ -58,7 +59,7 @@ public class ProductRepository {
 		}
 	}
 
-	public Product findById(long id) throws SQLException {
+	public Optional<Product> findById(long id) throws SQLException {
 		try (PreparedStatement stmt = connection.prepareStatement(
 				"select `id`, `title`, `description`, `price` " +
 						"from `java_ee_shop`.`products` " +
@@ -67,15 +68,15 @@ public class ProductRepository {
 
 			try (ResultSet rs = stmt.executeQuery()) {
 				if (rs.next()) {
-					return new Product(rs.getLong("id"), rs.getString("title"),
-							rs.getString("description"), rs.getDouble("price"));
+					return Optional.of(new Product(rs.getLong("id"), rs.getString("title"),
+							rs.getString("description"), rs.getDouble("price")));
 				}
 			}
 		}
-		return new Product(-1L, "", "", 0.);
+		return Optional.empty();
 	}
 
-	public List<Product> findAll() throws SQLException {
+	public Optional<List<Product>> findAll() throws SQLException {
 		List<Product> result = new ArrayList<>();
 		try (Statement stmt = connection.createStatement()) {
 			try (ResultSet rs = stmt.executeQuery(
@@ -87,7 +88,7 @@ public class ProductRepository {
 				}
 			}
 		}
-		return result;
+		return Optional.of(result);
 	}
 
 	private void createTableIfNotExists(Connection conn) throws SQLException {
