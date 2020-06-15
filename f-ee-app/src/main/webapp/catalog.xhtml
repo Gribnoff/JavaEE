@@ -15,6 +15,13 @@
             <h1>Каталог</h1>
         </div>
 
+        <h:form id="catalogButtons">
+            <div class="d-flex justify-content-start">
+                <h:commandButton value="Новый товар" styleClass="btn btn-primary"
+                                 action="#{productController.createOrEditProduct(null)}"/>
+            </div>
+        </h:form>
+
         <h:form id="productsTable">
             <h:dataTable value="#{productController.getAll()}" var="product"
                          styleClass="table table-hover">
@@ -35,7 +42,7 @@
                     <h:commandButton value="В корзину"
                                      styleClass="btn btn-success"
                                      action="#{productController.addProductToCart(product)}">
-<!--                    <i class="fas fa-cart-plus fa-lg"></i>-->
+                        <!--                    <i class="fas fa-cart-plus fa-lg"></i>-->
                         <f:ajax event="click" render="productsTable"/>
                     </h:commandButton>
                 </h:column>

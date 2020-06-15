@@ -5,11 +5,13 @@ import java.io.Serializable;
 public class Product implements Serializable {
 	private static final long serialVersionUID = 10419221207L;
 
-	private final long id;
+	private long id;
 
 	private String title;
 	private String description;
 	private double price;
+
+	public Product() {}
 
 	public Product(long id, String title, String description, double price) {
 		this.id = id;
@@ -20,6 +22,10 @@ public class Product implements Serializable {
 
 	public long getId() {
 		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getTitle() {
@@ -40,6 +46,10 @@ public class Product implements Serializable {
 
 	public double getPrice() {
 		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
 	}
 
 	public void setPrice(long price) {
