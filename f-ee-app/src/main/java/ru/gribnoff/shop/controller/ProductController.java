@@ -37,6 +37,10 @@ public class ProductController implements Serializable {
 		return productRepository.findAll().orElse(new ArrayList<>());
 	}
 
+	public List<Product> getAllActive() throws SQLException {
+		return productRepository.findAllByActive().orElse(new ArrayList<>());
+	}
+
 	public String showProduct(Product product) {
 		this.product = product;
 		return "/product.xhmtl?faces-redirect=true";
@@ -61,6 +65,12 @@ public class ProductController implements Serializable {
 		else
 			productRepository.update(this.product);
 
+		return "/catalog.xhtml?faces-redirect=true";
+	}
+
+	public String deleteProduct(Product product) {
+//		productRepository.delete(product.getId());
+		product.setActive(false); //товар может быть в оформленном заказе, поэтому не удаляется из БД, а деактивируется
 		return "/catalog.xhtml?faces-redirect=true";
 	}
 }

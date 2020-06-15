@@ -15,12 +15,16 @@
             <h1>Товар</h1>
         </div>
         <h:form id="catalogButtons">
-            <div class="d-flex justify-content-between">
-                <h:commandButton value="Редактировать" styleClass="btn btn-primary"
+            <div class="col-2 pl-0 d-flex justify-content-between">
+                <h:commandButton value="Редактировать" styleClass="btn btn-primary mr-1"
                                  action="#{productController.createOrEditProduct(productController.product)}"/>
+                <h:commandButton value="Удалить" styleClass="btn btn-danger"
+                                 action="#{productController.deleteProduct(productController.product)}"/>
             </div>
         </h:form>
         <div>
+            <h:outputText styleClass="d-flex justify-content-center" style="color: red;"
+                          value="Товар недоступен!" rendered="#{not productController.product.active}"/>
             <p>
                 #{productController.product.description}
             </p>
@@ -28,7 +32,8 @@
         <div class="d-flex justify-content-between">
             <h:form id="addToCart">
                 <h:commandButton value="В корзину" styleClass="btn btn-success"
-                                 action="#{productController.addProductToCart(productController.product)}">
+                                 action="#{productController.addProductToCart(productController.product)}"
+                                 rendered="#{productController.product.active}">
                     <!--                <i class="fas fa-cart-plus fa-lg"></i>-->
                 </h:commandButton>
             </h:form>

@@ -23,29 +23,29 @@
         </h:form>
 
         <h:form id="productsTable">
-            <h:dataTable value="#{productController.getAll()}" var="product"
+            <h:dataTable value="#{productController.getAllActive()}" var="product"
                          styleClass="table table-hover">
-                <h:column>
-                    <f:facet name="header">Наименование</f:facet>
-                    <h:commandLink value="#{product.title}" action="#{productController.showProduct(product)}"/>
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Описание</f:facet>
-                    #{product.description}
-                </h:column>
-                <h:column>
-                    <f:facet name="header">Цена</f:facet>
-                    #{product.price}
-                </h:column>
-                <h:column>
-                    <f:facet name="header"> </f:facet>
-                    <h:commandButton value="В корзину"
-                                     styleClass="btn btn-success"
-                                     action="#{productController.addProductToCart(product)}">
-                        <!--                    <i class="fas fa-cart-plus fa-lg"></i>-->
-                        <f:ajax event="click" render="productsTable"/>
-                    </h:commandButton>
-                </h:column>
+                    <h:column>
+                        <f:facet name="header">Наименование</f:facet>
+                        <h:commandLink value="#{product.title}" action="#{productController.showProduct(product)}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Описание</f:facet>
+                        #{product.description}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Цена</f:facet>
+                        #{product.price}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header"> </f:facet>
+                        <h:commandButton value="В корзину"
+                                         styleClass="btn btn-success"
+                                         action="#{productController.addProductToCart(product)}">
+                            <!--                    <i class="fas fa-cart-plus fa-lg"></i>-->
+                            <f:ajax event="click" render="productsTable"/>
+                        </h:commandButton>
+                    </h:column>
             </h:dataTable>
         </h:form>
     </div>
