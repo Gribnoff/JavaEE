@@ -14,9 +14,17 @@
         <div class="d-flex justify-content-center">
             <h1>Товар</h1>
         </div>
-        <p>
-            #{productController.product.description}
-        </p>
+        <h:form id="catalogButtons">
+            <div class="d-flex justify-content-between">
+                <h:commandButton value="Редактировать" styleClass="btn btn-primary"
+                                 action="#{productController.createOrEditProduct(productController.product)}"/>
+            </div>
+        </h:form>
+        <div>
+            <p>
+                #{productController.product.description}
+            </p>
+        </div>
         <div class="d-flex justify-content-between">
             <h:form id="addToCart">
                 <h:commandButton value="В корзину" styleClass="btn btn-success"

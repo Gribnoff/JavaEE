@@ -1,5 +1,6 @@
 package ru.gribnoff.shop.controller;
 
+import org.jetbrains.annotations.Nullable;
 import ru.gribnoff.shop.entities.bean.Cart;
 import ru.gribnoff.shop.entities.Product;
 import ru.gribnoff.shop.repository.ProductRepository;
@@ -47,5 +48,19 @@ public class ProductController implements Serializable {
 
 	public void removeProductFromCart(Product product) {
 		cart.remove(product.getId());
+	}
+
+	public String createOrEditProduct(@Nullable Product product) {
+		this.product = product == null ? new Product() : product;
+		return "/product-form.xhtml?faces-redirect";
+	}
+
+	public String saveProduct() throws SQLException {
+		if (this.product.getId() == 0)
+			productRepository.insert(this.product);
+		else
+			productRepository.update(this.product);
+
+		return "/catalog.xhtml?faces-redirect=true";
 	}
 }
