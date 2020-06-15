@@ -35,12 +35,4 @@ public class Order implements Serializable {
 		this.cartRecords = new ArrayList<>(cartRecords);
 		this.price = price;
 	}
-
-	public static double calculatePrice(@NotNull List<CartRecord> cartRecords) {
-		double overall = 0;
-		for (CartRecord cartRecord : cartRecords) {
-			overall += cartRecord.getPrice();
-		}
-		return overall;
-	}
 }

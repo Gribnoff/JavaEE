@@ -107,17 +107,17 @@ public class CartRecordRepository {
 
 	private void createTableIfNotExists(Connection conn) throws SQLException {
 		try (Statement stmt = conn.createStatement()) {
-			stmt.execute("create table if not exists `cart_records` (\n" +
-					"\t	`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,\n" +
-					"\t	`product_id` bigint(20) unsigned NOT NULL,\n" +
-					"\t	`quantity` smallint(5) unsigned NOT NULL DEFAULT '1',\n" +
-					"\t	`price` double unsigned NOT NULL,\n" +
-					"\t `order_id` bigint(20) unsigned NOT NULL,\n" +
-					"\t	PRIMARY KEY (`id`),\n" +
-					"\t	KEY `cart_record_product_fk_idx` (`product_id`),\n" +
-					"\t KEY `cart_record_order_fk_idx` (`order_id`),\n" +
-					"\t CONSTRAINT `cart_record_order_fk` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`),\n" +
-					"\t	CONSTRAINT `cart_record_product_fk` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`))");
+			stmt.execute("create table if not exists `cart_records` (" +
+					"`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT, " +
+					"`product_id` bigint(20) unsigned NOT NULL, " +
+					"`quantity` smallint(5) unsigned NOT NULL DEFAULT '1', " +
+					"`price` double unsigned NOT NULL, " +
+					"`order_id` bigint(20) unsigned NOT NULL, " +
+					"PRIMARY KEY (`id`), " +
+					"KEY `cart_record_product_fk_idx` (`product_id`), " +
+					"KEY `cart_record_order_fk_idx` (`order_id`), " +
+					"CONSTRAINT `cart_record_order_fk` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`), " +
+					"CONSTRAINT `cart_record_product_fk` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`))");
 		}
 	}
 }
