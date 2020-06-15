@@ -19,8 +19,6 @@ public class OrderRepository {
 	@Inject
 	private DataSource dataSource;
 	@Inject
-	private ProductRepository productRepository;
-	@Inject
 	private CartRecordRepository cartRecordRepository;
 
 	private Connection connection;
@@ -39,7 +37,7 @@ public class OrderRepository {
 				Statement selectMaxId = connection.createStatement()) {
 			insertOrder.setDouble(1, order.getPrice());
 			insertOrder.execute();
-			long orderId = -1L;
+			long orderId;
 
 			try (ResultSet maxIdRS = selectMaxId.executeQuery(
 					"select MAX(`id`) max " +
@@ -116,20 +114,20 @@ public class OrderRepository {
 	private void createTableIfNotExists(Connection conn) throws SQLException {
 		try (Statement stmt = conn.createStatement()) {
 			stmt.execute(
-					"create table if not exists `orders` (\n" +
-							"\t	`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,\n" +
-							"\t	`price` double unsigned NOT NULL,\n" +
-							"\t	PRIMARY KEY (`id`));");
+					"create table if not exists `orders` (" +
+							"`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT, " +
+							"`price` double unsigned NOT NULL, " +
+							"PRIMARY KEY (`id`));");
 		}
 		try (Statement stmt = conn.createStatement()) {
 			stmt.execute(
-					"create table if not exists `order_cart_record` (\n" +
-							"\t	`order_id` bigint(20) unsigned NOT NULL,\n" +
-							"\t	`cart_record_id` bigint(20) unsigned NOT NULL,\n" +
-							"\t	PRIMARY KEY (`order_id`,`cart_record_id`),\n" +
-							"\t KEY `cart_record_fk_idx` (`cart_record_id`),\n" +
-							"\t CONSTRAINT `cart_record_fk` FOREIGN KEY (`cart_record_id`) REFERENCES `cart_records` (`id`),\n" +
-							"\t CONSTRAINT `order_fk` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`));");
+					"create table if not exists `order_cart_record` (" +
+							"`order_id` bigint(20) unsigned NOT NULL, " +
+							"`cart_record_id` bigint(20) unsigned NOT NULL, " +
+							"PRIMARY KEY (`order_id`,`cart_record_id`), " +
+							"KEY `cart_record_fk_idx` (`cart_record_id`), " +
+							"CONSTRAINT `cart_record_fk` FOREIGN KEY (`cart_record_id`) REFERENCES `cart_records` (`id`), " +
+							"CONSTRAINT `order_fk` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`));");
 		}
 	}
 }

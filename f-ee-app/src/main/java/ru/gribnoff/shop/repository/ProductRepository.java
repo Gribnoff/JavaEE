@@ -114,12 +114,12 @@ public class ProductRepository {
 
 	private void createTableIfNotExists(Connection conn) throws SQLException {
 		try (Statement stmt = conn.createStatement()) {
-			stmt.execute("create table if not exists `products` (\n" +
-					"\t	`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,\n" +
-					"\t	`title` varchar(255) NOT NULL,\n" +
-					"\t	`description` varchar(255) DEFAULT NULL,\n" +
-					"\t	`price` double unsigned NOT NULL,\n" +
-					"\t `active` boolean not null default true)");
+			stmt.execute("create table if not exists `products` (" +
+					"`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY, " +
+					"`title` varchar(255) NOT NULL, " +
+					"`description` varchar(255) DEFAULT NULL, " +
+					"`price` double unsigned NOT NULL, " +
+					"`active` boolean not null default true)");
 		}
 	}
 }
