@@ -11,13 +11,16 @@ public class Product implements Serializable {
 	private String description;
 	private double price;
 
+	private boolean active;
+
 	public Product() {}
 
-	public Product(long id, String title, String description, double price) {
+	public Product(long id, String title, String description, double price, boolean active) {
 		this.id = id;
 		this.title = title;
 		this.description = description;
 		this.price = price;
+		this.active = active;
 	}
 
 	public long getId() {
@@ -54,5 +57,13 @@ public class Product implements Serializable {
 
 	public void setPrice(long price) {
 		this.price = price;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 }

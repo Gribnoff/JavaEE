@@ -30,6 +30,10 @@
                     <h:outputLabel value="Цена"/>
                     <h:inputText styleClass="form-control" id="price" value="#{productController.product.price}"/>
                 </div>
+                <div class="form-group">
+                    <h:outputLabel value="Доступен?"/>
+                    <h:selectBooleanCheckbox id="active" value="#{productController.product.active}"/>
+                </div>
 
                 <h:commandButton styleClass="btn btn-primary"
                                  value="#{productController.product.id == 0 ? 'Создать' : 'Изменить'}"
