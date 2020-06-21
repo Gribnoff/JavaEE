@@ -23,19 +23,6 @@
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
 
-    <context-param>
-        <param-name>jdbcConnectionString</param-name>
-        <param-value>jdbc:mysql://localhost:3306/java_ee_shop?createDatabaseIfNotExist=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC</param-value>
-    </context-param>
-    <context-param>
-        <param-name>username</param-name>
-        <param-value>mysql</param-value>
-    </context-param>
-    <context-param>
-        <param-name>password</param-name>
-        <param-value>mysql</param-value>
-    </context-param>
-
     <error-page>
         <error-code>403</error-code>
         <location>/ExceptionHandler</location>
