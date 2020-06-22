@@ -1,38 +1,30 @@
 package ru.gribnoff.shop.entities;
 
-import org.jetbrains.annotations.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import ru.gribnoff.shop.entities.common.BaseEntity;
 
-import java.io.Serializable;
-import java.util.ArrayList;
+import javax.persistence.*;
 import java.util.List;
 
-public class Order implements Serializable {
+@Entity
+@Table(name = "orders")
+@Data
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@AllArgsConstructor
+public class Order extends BaseEntity {
 	private static final long serialVersionUID = 104119221352077L;
 
-	private long id;
+	@OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+	private List<CartRecord> cartRecords;
+	private double price;
 
-	private final double price;
-	private final List<CartRecord> cartRecords;
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public double getPrice() {
-		return price;
-	}
-
-	public List<CartRecord> getCartRecords() {
-		return cartRecords;
-	}
-
-	public Order(long id, @NotNull List<CartRecord> cartRecords, Double price) {
-		this.id = id;
-		this.cartRecords = new ArrayList<>(cartRecords);
+	public Order(Long id, List<CartRecord> cartRecords, double price) {
+		super(id);
+		this.cartRecords = cartRecords;
 		this.price = price;
 	}
 }
