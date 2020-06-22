@@ -1,55 +1,31 @@
 package ru.gribnoff.shop.entities;
 
-import org.jetbrains.annotations.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import ru.gribnoff.shop.entities.common.BaseEntity;
 
-import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-public class CartRecord implements Serializable {
+@Entity
+@Table(name = "cart_records")
+@Data
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@AllArgsConstructor
+public class CartRecord extends BaseEntity {
     private static final long serialVersionUID = 1905122041950251207L;
 
-    private final long id;
-    private final Product product;
+    @ManyToOne
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    private Product product;
     private int quantity;
     private double price;
+    @ManyToOne
+    @JoinColumn(name = "order_id", referencedColumnName = "id")
     private Order order;
-
-    public long getId() {
-        return id;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
-
-    public CartRecord(long id, @NotNull Product product, int quantity, Order order) {
-        this.id = id;
-        this.product = product;
-        this.quantity = quantity;
-        this.price = product.getPrice() * quantity;
-        this.order = order;
-    }
 }
