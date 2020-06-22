@@ -49,7 +49,7 @@ public class OrderController implements Serializable {
 	}
 
 	public String proceedToCheckout() {
-		orderService.saveNewOrder();
+		this.order = orderService.saveNewOrder();
 		cart.clear();
 		return "/checkout.xhtml?faces-redirect=true";
 	}

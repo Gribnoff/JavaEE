@@ -52,15 +52,15 @@ public class OrderService implements CrudService<Order, Long> {
 	}
 
 	@Transactional
-	public void saveNewOrder() {
+	public Order saveNewOrder() {
 		Order order = new Order(cart.getCartRecords(), cart.getPrice());
 		orderRepository.save(order);
-		long id = orderRepository.findMaxId();
-		order.setId(id);
 
 		for (CartRecord cartRecord : cart.getCartRecords()) {
 			cartRecord.setOrder(order);
 			cartRecordRepository.save(cartRecord);
 		}
+
+		return order;
 	}
 }
