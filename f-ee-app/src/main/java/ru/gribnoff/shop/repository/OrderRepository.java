@@ -34,8 +34,4 @@ public class OrderRepository implements CrudRepository<Order, Long> {
 	public Optional<List<Order>> findAll() {
 		return Optional.of(em.createQuery("from Order", Order.class).getResultList());
 	}
-
-	public long findMaxId() {
-		return em.createQuery("select MAX(id) from Order").getFirstResult();
-	}
 }

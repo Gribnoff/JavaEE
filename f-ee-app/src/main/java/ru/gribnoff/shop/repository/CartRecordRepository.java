@@ -42,7 +42,6 @@ public class CartRecordRepository implements CrudRepository<CartRecord, Long> {
 
 	public Optional<List<CartRecord>> findAllByOrderId(Long id) {
 		Query query = em.createQuery("select p from CartRecord p where id = :id", CartRecord.class).setParameter("id", id);
-//		query.setParameter(0, active);
 		return Optional.of(query.getResultList());
 	}
 }

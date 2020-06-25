@@ -28,7 +28,7 @@ public class ProductController implements Serializable {
 	@Setter
 	private transient Product product;
 
-	private List<Product> products;
+	private transient List<Product> products;
 
 	public void preloadProducts() {
 		this.products = productService.findAllByActive(true).orElse(new ArrayList<>());
@@ -66,7 +66,7 @@ public class ProductController implements Serializable {
 	}
 
 	public String deleteProduct(Product product) {
-		product.setActive(false); //товар может быть в оформленном заказе, поэтому не удаляется из БД, а деактивируется
+		productService.setActive(product, false); //товар может быть в оформленном заказе, поэтому не удаляется из БД, а деактивируется
 		return "/catalog.xhtml?faces-redirect=true";
 	}
 }

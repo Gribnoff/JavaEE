@@ -43,4 +43,9 @@ public class ProductService implements CrudService<Product, Long> {
 	public Optional<List<Product>> findAllByActive(boolean active) {
 		return productRepository.findAllByActive(active);
 	}
+
+	public void setActive(Product product, boolean active) {
+		product.setActive(active);
+		productRepository.save(product);
+	}
 }

@@ -2,7 +2,6 @@ package ru.gribnoff.shop.controller;
 
 import ru.gribnoff.shop.entities.Order;
 import ru.gribnoff.shop.entities.bean.Cart;
-import ru.gribnoff.shop.service.CartRecordService;
 import ru.gribnoff.shop.service.OrderService;
 
 import javax.enterprise.context.SessionScoped;
@@ -19,8 +18,6 @@ public class OrderController implements Serializable {
 
 	@Inject
 	private OrderService orderService;
-	@Inject
-	private CartRecordService cartRecordService;
 	@Inject
 	private Cart cart;
 
