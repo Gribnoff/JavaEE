@@ -1,31 +1,29 @@
 package ru.gribnoff.shop.service;
 
 import ru.gribnoff.shop.entities.CartRecord;
-import ru.gribnoff.shop.repository.CartRecordRepository;
+import ru.gribnoff.shop.repository.CartRecordRepositoryLocal;
 
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.transaction.Transactional;
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
 import java.util.List;
 import java.util.Optional;
 
-@Named
-@SessionScoped
-public class CartRecordService implements CrudService<CartRecord, Long> {
+@Stateless
+public class CartRecordService implements CartRecordServiceLocal {
 	private static final long serialVersionUID = 3905126204815005127L;
 
-	@Inject
-	private CartRecordRepository cartRecordRepository;
+	@EJB
+	private CartRecordRepositoryLocal cartRecordRepository;
 
 	@Override
-	@Transactional
+	@TransactionAttribute
 	public void save(CartRecord cartRecord) {
 		cartRecordRepository.save(cartRecord);
 	}
 
 	@Override
-	@Transactional
+	@TransactionAttribute
 	public void delete(Long id) {
 		cartRecordRepository.delete(id);
 	}
