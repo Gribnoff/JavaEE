@@ -5,10 +5,10 @@ import lombok.Setter;
 import org.jetbrains.annotations.Nullable;
 import ru.gribnoff.shop.entities.Product;
 import ru.gribnoff.shop.entities.bean.Cart;
-import ru.gribnoff.shop.service.ProductService;
+import ru.gribnoff.shop.service.ProductServiceLocal;
 
+import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -19,9 +19,9 @@ import java.util.List;
 public class ProductController implements Serializable {
 	private static final long serialVersionUID = 1041241922145207L;
 
-	@Inject
-	private ProductService productService;
-	@Inject
+	@EJB
+	private ProductServiceLocal productService;
+	@EJB
 	private Cart cart;
 
 	@Getter

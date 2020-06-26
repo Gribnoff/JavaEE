@@ -4,14 +4,12 @@ import ru.gribnoff.shop.entities.CartRecord;
 import ru.gribnoff.shop.entities.Product;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Named;
+import javax.ejb.Stateful;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Named
-@SessionScoped
+@Stateful
 public class Cart implements Serializable {
     private static final long serialVersionUID = 1204905195025121207L;
 
@@ -23,12 +21,6 @@ public class Cart implements Serializable {
     public void init() {
         cartRecords = new ArrayList<>();
         recalculatePrice();
-    }
-
-    public static Cart getCart() {
-        if (cart == null)
-            cart = new Cart();
-        return cart;
     }
 
     public List<CartRecord> getCartRecords() {

@@ -3,37 +3,35 @@ package ru.gribnoff.shop.service;
 import ru.gribnoff.shop.entities.CartRecord;
 import ru.gribnoff.shop.entities.Order;
 import ru.gribnoff.shop.entities.bean.Cart;
-import ru.gribnoff.shop.repository.CartRecordRepository;
-import ru.gribnoff.shop.repository.OrderRepository;
+import ru.gribnoff.shop.repository.CartRecordRepositoryLocal;
+import ru.gribnoff.shop.repository.OrderRepositoryLocal;
 
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.transaction.Transactional;
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Named
-@SessionScoped
-public class OrderService implements CrudService<Order, Long> {
+@Stateless
+public class OrderService implements OrderServiceLocal {
 	private static final long serialVersionUID = 3905126204815005127L;
 
-	@Inject
-	private OrderRepository orderRepository;
-	@Inject
-	private CartRecordRepository cartRecordRepository;
-	@Inject
+	@EJB
+	private OrderRepositoryLocal orderRepository;
+	@EJB
+	private CartRecordRepositoryLocal cartRecordRepository;
+	@EJB
 	private Cart cart;
 
 	@Override
-	@Transactional
+	@TransactionAttribute
 	public void save(Order order) {
 		orderRepository.save(order);
 	}
 
 	@Override
-	@Transactional
+	@TransactionAttribute
 	public void delete(Long id) {
 		for (CartRecord cartRecord : cartRecordRepository.findAllByOrderId(id).orElse(new ArrayList<>())) {
 			cartRecordRepository.delete(cartRecord.getId());
@@ -51,7 +49,7 @@ public class OrderService implements CrudService<Order, Long> {
 		return orderRepository.findAll();
 	}
 
-	@Transactional
+	@TransactionAttribute
 	public Order saveNewOrder() {
 		Order order = new Order(cart.getCartRecords(), cart.getPrice());
 		orderRepository.save(order);

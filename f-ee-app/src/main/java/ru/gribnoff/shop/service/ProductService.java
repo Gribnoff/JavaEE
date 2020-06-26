@@ -1,31 +1,29 @@
 package ru.gribnoff.shop.service;
 
 import ru.gribnoff.shop.entities.Product;
-import ru.gribnoff.shop.repository.ProductRepository;
+import ru.gribnoff.shop.repository.ProductRepositoryLocal;
 
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.transaction.Transactional;
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
 import java.util.List;
 import java.util.Optional;
 
-@Named
-@SessionScoped
-public class ProductService implements CrudService<Product, Long> {
+@Stateless
+public class ProductService implements ProductServiceLocal {
 	private static final long serialVersionUID = 590512204502517L;
 
-	@Inject
-	ProductRepository productRepository;
+	@EJB
+	private ProductRepositoryLocal productRepository;
 
 	@Override
-	@Transactional
+	@TransactionAttribute
 	public void save(Product product) {
 		productRepository.save(product);
 	}
 
 	@Override
-	@Transactional
+	@TransactionAttribute
 	public void delete(Long id) {
 		productRepository.delete(id);
 	}
@@ -44,6 +42,7 @@ public class ProductService implements CrudService<Product, Long> {
 		return productRepository.findAllByActive(active);
 	}
 
+	@TransactionAttribute
 	public void setActive(Product product, boolean active) {
 		product.setActive(active);
 		productRepository.save(product);

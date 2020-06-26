@@ -2,17 +2,14 @@ package ru.gribnoff.shop.repository;
 
 import ru.gribnoff.shop.entities.CartRecord;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Named;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.util.List;
 import java.util.Optional;
 
-@Named
-@ApplicationScoped
-public class CartRecordRepository implements CrudRepository<CartRecord, Long> {
+@Stateless
+public class CartRecordRepository implements CartRecordRepositoryLocal {
 	private static final long serialVersionUID = 1051220419502520L;
 
 	@PersistenceContext(unitName = "datasource")
@@ -41,7 +38,6 @@ public class CartRecordRepository implements CrudRepository<CartRecord, Long> {
 	}
 
 	public Optional<List<CartRecord>> findAllByOrderId(Long id) {
-		Query query = em.createQuery("select p from CartRecord p where id = :id", CartRecord.class).setParameter("id", id);
-		return Optional.of(query.getResultList());
+		return Optional.of(em.createQuery("select p from CartRecord p where id = :id", CartRecord.class).setParameter("id", id).getResultList());
 	}
 }
