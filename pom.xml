@@ -9,6 +9,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>f-ee-app</module>
+        <module>client</module>
     </modules>
     <packaging>pom</packaging>
 
