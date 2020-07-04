@@ -1,6 +1,7 @@
 package ru.gribnoff.shop.ws;
 
 import ru.gribnoff.shop.entities.Product;
+import ru.gribnoff.shop.rest.ProductServiceRS;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @Stateless
 @WebService(endpointInterface = "ru.gribnoff.shop.ws.ProductServiceIWS", serviceName = "ProductService")
-public class ProductServiceWS implements ProductServiceLocalWS, ProductServiceRemoteWS, ProductServiceIWS {
+public class ProductServiceWS implements ProductServiceLocalWS, ProductServiceRemoteWS, ProductServiceIWS, ProductServiceRS {
 	private static final long serialVersionUID = 590512204502517L;
 
 	@EJB
