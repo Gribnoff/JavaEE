@@ -17,6 +17,19 @@
                 <li class="nav-item">
                     <h:link value="Orders" outcome="orders" styleClass="nav-link"/>
                 </li>
+                <li class="nav-item">
+                    <h:link value="Users" outcome="admin/users" styleClass="nav-link"/>
+                </li>
+                <li>
+                    <h:form rendered="#{request.userPrincipal == null}">
+                        <h:commandLink action="login" value="Login"/>
+                    </h:form>
+                </li>
+                <li>
+                    <h:form rendered="#{request.userPrincipal != null}">
+                        <h:commandLink action="#{userController.logout()}" value="Logout"/>
+                    </h:form>
+                </li>
             </ul>
         </div>
     </nav>
