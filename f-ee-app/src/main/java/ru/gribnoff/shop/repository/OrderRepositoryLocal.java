@@ -8,7 +8,7 @@ import java.util.Optional;
 
 @Local
 public interface OrderRepositoryLocal extends CrudRepository<Order, Long> {
-	void save(Order cartRecord);
+	void save(Order order);
 	void delete(Long id);
 	Optional<Order> findById(Long id);
 	Optional<List<Order>> findAll();
