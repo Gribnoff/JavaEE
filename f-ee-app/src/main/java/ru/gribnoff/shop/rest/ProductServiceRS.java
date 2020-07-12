@@ -11,7 +11,6 @@ import java.util.List;
 @Path("/product")
 public interface ProductServiceRS {
 	@POST
-	@Path("/update")
 	@Consumes(MediaType.APPLICATION_JSON)
 	void save(Product product);
 
@@ -21,7 +20,7 @@ public interface ProductServiceRS {
 	void delete(@PathParam("id") Long id);
 
 	@GET
-	@Path("/list")
+	@Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)
 	List<Product> findAll();
 
@@ -29,5 +28,4 @@ public interface ProductServiceRS {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	Product findById(@PathParam("id") Long id);
-
 }
